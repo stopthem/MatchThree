@@ -6,6 +6,7 @@ public class GamePiece : MonoBehaviour
 {
     private int xIndex;
     private int yIndex;
+    private Board board;
     public void SetCoordination(int x, int y)
     {
         xIndex = x;
@@ -14,6 +15,10 @@ public class GamePiece : MonoBehaviour
     public void Move (int destX, int destY, float timeToMove)
     {
         StartCoroutine(MoveRotuine(new Vector3(destX, destY, 0), timeToMove));
+    }
+    public void SetBoard(Board board)
+    {
+        this.board = board;
     }
     private IEnumerator MoveRotuine(Vector3 destination,float timeToMove)
     {
@@ -25,12 +30,16 @@ public class GamePiece : MonoBehaviour
             if (Vector3.Distance(transform.position, destination)< 0.01f)
             {
                 reachedDestination = true;
+                if (board !=null)
+                {
+                    board.PlaceGamePiece(this, (int)destination.x , (int)destination.y);    
+                }
                 transform.position = destination;
                 SetCoordination((int)destination.x,(int)destination.y);
                 break;
             }
-            float t = elapsedTime / timeToMove;
-            Mathf.Clamp01(t);
+            float t = Mathf.Clamp01(elapsedTime / timeToMove);
+            t = 1 - Mathf.Cos(t * Mathf.PI * 0.5f);
             transform.position = Vector3.Lerp(startingPosition, destination , t);
             elapsedTime += Time.deltaTime;
             yield return null;

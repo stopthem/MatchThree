@@ -7,10 +7,12 @@ public class Board : MonoBehaviour
     public int height;
     public int width;
     public int borderSize;
+    public float moveSpeed;
     public GameObject tilePrefab;
     public GameObject[] gamePiecePrefabs;
     private Tile[,] tileArray;
     private GamePiece[,] gamePiecesArray;
+    private Tile clickedTile,targetTile;
     
     private void Start()
     {
@@ -51,9 +53,10 @@ public class Board : MonoBehaviour
         return gamePiecePrefabs[randomPiece];
         
     }
-    private void PlaceGamePiece(GamePiece gamePiece, int x, int y)
+    public void PlaceGamePiece(GamePiece gamePiece, int x, int y)
     {
         gamePiece.transform.position = new Vector3(x,y,0);
+        gamePiecesArray[x,y] = gamePiece;
         gamePiece.SetCoordination(x,y);
     }
     private void FillRandom()
@@ -65,10 +68,58 @@ public class Board : MonoBehaviour
                 GameObject randomPiece = Instantiate(GetRandomPiece(), Vector3.zero ,Quaternion.identity);
                 if (randomPiece != null)
                 {
+                    randomPiece.GetComponent<GamePiece>().SetBoard(this);
                     PlaceGamePiece(randomPiece.GetComponent<GamePiece>(), i ,j);
+                    randomPiece.transform.parent = transform;
                 }
             }
         }
     }
 
+    public void ClickTile(Tile tile)
+    {
+        if (clickedTile == null)
+        {
+            clickedTile = tile;
+        }
+    }
+    public void DragToTile(Tile tile)
+    {
+        if (clickedTile != null)
+        {
+            targetTile = tile;
+        }
+    }
+    public void ReleaseTile()
+    {
+        if (clickedTile != null && targetTile != null)
+        {
+            SwitchTiles(clickedTile,targetTile);
+        }
+        clickedTile = null;
+        targetTile = null;
+    }
+    private void SwitchTiles(Tile clickedTile, Tile targetTile)
+    {
+        if (isNextTo(clickedTile,targetTile))
+        {
+            GamePiece clickedPiece = gamePiecesArray[clickedTile.xIndex, clickedTile.yIndex];
+            GamePiece targetPiece = gamePiecesArray[targetTile.xIndex , targetTile.yIndex];
+            clickedPiece.Move(targetTile.xIndex, targetTile.yIndex , moveSpeed);
+            targetPiece.Move(clickedTile.xIndex, clickedTile.yIndex , moveSpeed); 
+        }
+        
+    }
+    bool isNextTo(Tile start, Tile end)
+    {
+        if (Mathf.Abs(start.xIndex - end.xIndex) == 1 && start.yIndex == end.yIndex)
+        {
+            return true;
+        }
+        if (Mathf.Abs(start.yIndex - end.yIndex) == 1 && start.xIndex == end.xIndex)
+        {
+            return true;
+        }
+        return false;
+    }
 }
