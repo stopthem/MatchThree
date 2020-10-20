@@ -4,9 +4,22 @@ using UnityEngine;
 
 public class GamePiece : MonoBehaviour
 {
-    private int xIndex;
-    private int yIndex;
+    public int xIndex;
+    public int yIndex;
     private Board board;
+    public enum MatchValue{
+
+        Yellow,
+        Blue,
+        Red,
+        Magenta,
+        Cyan,
+        Teal,
+        Green,
+        Indigo,
+        Wild
+    }
+    public MatchValue matchValue;
     public void SetCoordination(int x, int y)
     {
         xIndex = x;
