@@ -10,11 +10,22 @@ public class Board : MonoBehaviour
     public int borderSize;
     public float moveSpeed;
     public GameObject tilePrefab;
+    public GameObject tileObstaclePrefab;
     public GameObject[] gamePiecePrefabs;
     private Tile[,] tileArray;
     private GamePiece[,] gamePiecesArray;
     private Tile clickedTile,targetTile;
     private bool playerInputEnabled = true;
+
+    private ParticleManager particleManager;
+    public StartingTile[] startingTiles;
+
+    [System.Serializable]
+    public class StartingTile
+    {
+        public GameObject tilePrefab;
+        public int y,z,x;
+    } 
     
     private void Start()
     {
@@ -23,24 +34,43 @@ public class Board : MonoBehaviour
         SetupTiles();
         SetupCamera();
         FillBoard(10,.5f);
+        particleManager = GameObject.FindWithTag("ParticleManager").GetComponent<ParticleManager>();
         // HighlightMatches();
     }
     void SetupTiles()
     {
+        foreach (StartingTile sTile in startingTiles)
+        {
+            if (sTile != null)
+            {
+                MakeTile(sTile.tilePrefab, sTile.x, sTile.y, sTile.z);
+            }
+        }
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
             {
-                GameObject tile = Instantiate(tilePrefab,new Vector3(i,j,0), Quaternion.identity) as GameObject;
-                tile.name = "Tile (" + i + "," + j + ") ";
-                tileArray [i,j] = tile.GetComponent<Tile>();
-                tile.transform.parent = transform;
-                tileArray[i,j].Init(i,j,this);
-
+                if (tileArray[i,j] == null)
+                {
+                    MakeTile(tilePrefab, i, j);
+                }
             }
-            
         }
     }
+
+    private void MakeTile(GameObject prefab,int x, int y, int z = 0)
+    {
+        if (prefab != null)
+        {
+            GameObject tile = Instantiate(prefab, new Vector3(x, y, z), Quaternion.identity) as GameObject;
+            tile.name = "Tile (" + x + "," + y + ") ";
+            tileArray[x, y] = tile.GetComponent<Tile>();
+            tile.transform.parent = transform;
+            tileArray[x, y].Init(x, y, this);
+        }
+        
+    }
+
     void SetupCamera()
     {
         Camera.main.transform.position = new Vector3((float) (width - 1 )/2f, (float) (height - 1)/2f, -10f);
@@ -95,7 +125,7 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                if (gamePiecesArray[i,j] == null)
+                if (gamePiecesArray[i,j] == null &&  tileArray[i,j].tileType != Tile.TileType.Obstacle)
                 {
                     GamePiece piece = FillRandomAt(i, j, falseYOffset, moveTime);
                     iterations = 0;
@@ -320,14 +350,22 @@ public class Board : MonoBehaviour
 
     private void HightlightTileOn(int x, int y, Color color)
     {
-        SpriteRenderer spriteRenderer = tileArray[x,y].GetComponent<SpriteRenderer>();
-        spriteRenderer.color = color;
+        if (tileArray[x,y].tileType != Tile.TileType.Breakable)
+        {
+            SpriteRenderer spriteRenderer = tileArray[x,y].GetComponent<SpriteRenderer>();
+            spriteRenderer.color = color;
+        }
+        
     }
 
     private void HighlightTileOff(int x, int y)
     {
-        SpriteRenderer spriteRenderer = tileArray[x, y].GetComponent<SpriteRenderer>();
-        spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0);
+        if (tileArray[x,y].tileType != Tile.TileType.Breakable)
+        {
+            SpriteRenderer spriteRenderer = tileArray[x, y].GetComponent<SpriteRenderer>();
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0);
+        }
+        
     }
 
     private List<GamePiece> FindMatchesAt(int x, int y, int minLength = 3)
@@ -378,7 +416,7 @@ public class Board : MonoBehaviour
             gamePiecesArray[x,y] = null;
             Destroy(pieceToClear.gameObject);
         }
-        HighlightTileOff(x,y);
+        // HighlightTileOff(x,y);
     }
     private void ClearBoard()
     {
@@ -396,7 +434,11 @@ public class Board : MonoBehaviour
         {
             if (piece != null)
             {
-               ClearPieceAt(piece.xIndex,piece.yIndex); 
+               ClearPieceAt(piece.xIndex,piece.yIndex);
+               if (particleManager != null)
+               {
+                   particleManager.ClearPieceFXAt(piece.xIndex, piece.yIndex);
+               }
             }
         }
     }
@@ -407,13 +449,35 @@ public class Board : MonoBehaviour
             HightlightTileOn(piece.xIndex, piece.yIndex , piece.GetComponent<SpriteRenderer>().color);
         }
     }
+    private void BreakTileAt(int x , int y)
+    {
+        Tile tileToBreak = tileArray[x,y];
+        if (tileToBreak != null && tileToBreak.tileType == Tile.TileType.Breakable)
+        {
+            if (particleManager != null)
+            {
+                particleManager.BreakTileFXAt(tileToBreak.breakableValue,x,y);
+            }
+            tileToBreak.BreakTile();
+        }
+    }
+    private void BreakTileAt(List<GamePiece> gamePieces)
+    {
+        foreach (GamePiece piece in gamePieces)
+        {
+            if (piece != null)
+            {
+                BreakTileAt(piece.xIndex, piece.yIndex);
+            }
+        }
+    }
     private List<GamePiece> CollapseColumn(int column, float collapseTime = .1f)
     {
         List<GamePiece> movingPieces = new List<GamePiece>();
 
         for (int i = 0; i < height - 1; i++)
         {
-            if (gamePiecesArray[column,i] == null)
+            if (gamePiecesArray[column,i] == null && tileArray[column , i].tileType != Tile.TileType.Obstacle)
             {
                 for (int j = i + 1; j < height; j++)
                 {
@@ -492,15 +556,15 @@ public class Board : MonoBehaviour
         List<GamePiece> movingPieces = new List<GamePiece>();
         List<GamePiece> matches = new List<GamePiece>();
 
-        HighlightMatches(gamePieces);
+        // HighlightMatches(gamePieces);
 
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.2f);
 
         bool isFinished = false;
         while (!isFinished)
         {
             ClearPieceAt(gamePieces);
-            
+            BreakTileAt(gamePieces);
             yield return new WaitForSeconds(.2f);
 
             movingPieces = CollapseColumn(gamePieces);
