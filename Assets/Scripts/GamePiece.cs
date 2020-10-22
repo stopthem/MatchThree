@@ -2,12 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GamePiece : MonoBehaviour
-{
-    public int xIndex;
-    public int yIndex;
-    private Board board;
-    public enum MatchValue{
+public enum MatchValue{
 
         Yellow,
         Blue,
@@ -19,6 +14,12 @@ public class GamePiece : MonoBehaviour
         Indigo,
         Wild
     }
+public class GamePiece : MonoBehaviour
+{
+    public int xIndex;
+    public int yIndex;
+    private Board board;
+    
     public MatchValue matchValue;
     public void SetCoordination(int x, int y)
     {
@@ -56,6 +57,23 @@ public class GamePiece : MonoBehaviour
             transform.position = Vector3.Lerp(startingPosition, destination , t);
             elapsedTime += Time.deltaTime;
             yield return null;
+        }
+    }
+    public void ChangeColor(GamePiece pieceToMatch)
+    {
+        SpriteRenderer renderertoChange = GetComponent<SpriteRenderer>();
+
+        Color colorToMatch = Color.clear;
+
+        if (pieceToMatch !=null)
+        {
+            SpriteRenderer rendererToMatch = pieceToMatch.GetComponent<SpriteRenderer>();
+
+            if (rendererToMatch != null && renderertoChange != null)
+            {
+                renderertoChange.color = rendererToMatch.color;
+            }
+            matchValue = pieceToMatch.matchValue;
         }
     }
 }

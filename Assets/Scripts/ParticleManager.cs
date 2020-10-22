@@ -7,6 +7,7 @@ public class ParticleManager : MonoBehaviour
     public GameObject clearFXPrefab;
     public GameObject breakFXPrefab;
     public GameObject doublebreakFXPrefab;
+    public GameObject bombEffectPrefab;
 
     public void ClearPieceFXAt(int x, int y, int z = 0)
     {
@@ -46,6 +47,18 @@ public class ParticleManager : MonoBehaviour
         {
             particlePlay = breakFX.GetComponent<ParticlePlay>();
 
+            if (particlePlay != null)
+            {
+                particlePlay.Play();
+            }
+        }
+    }
+    public void BombFXAt(int x, int y, int z = 0)
+    {
+        if (bombEffectPrefab != null)
+        {
+            GameObject bombFX = Instantiate(bombEffectPrefab, new Vector3(x,y,z), Quaternion.identity);
+            ParticlePlay particlePlay = bombFX.GetComponent<ParticlePlay>();
             if (particlePlay != null)
             {
                 particlePlay.Play();

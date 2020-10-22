@@ -172,7 +172,7 @@ MonoBehaviour:
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -414,52 +414,78 @@ MonoBehaviour:
   - {fileID: 5674535708065652008, guid: b5c22c8f773ccf84cb9cdc85f347effc, type: 3}
   - {fileID: 2615503390953970680, guid: 71cc17942579f2f48bca6324512c5524, type: 3}
   - {fileID: 189656951915382354, guid: 42659fc56b6faa84986a513a1a798245, type: 3}
+  adjacentBombPrefab: {fileID: 6788157701317640291, guid: 84bab08f9c98ab645be086201a2cc697,
+    type: 3}
+  columnBombPrefab: {fileID: 670810233734483501, guid: 2720e13ec2ef7474093272f7331cc35f,
+    type: 3}
+  rowBombPrefab: {fileID: 6983709101508950225, guid: e8e69753ac80c184bb943712db456d69,
+    type: 3}
+  colorBombPrefab: {fileID: 8804768865105406484, guid: 922867eaf226538428bcba5d75f1e505,
+    type: 3}
   startingTiles:
-  - tilePrefab: {fileID: 4504191293212317737, guid: 1ccf17b834172634e83b8d332e7bebd8,
+  - tilePrefab: {fileID: 826713112872809428, guid: 892d12a96d2453343a6d54d1882b7f76,
+      type: 3}
+    y: 5
+    z: 1
+    x: 1
+  - tilePrefab: {fileID: 826713112872809428, guid: 892d12a96d2453343a6d54d1882b7f76,
+      type: 3}
+    y: 5
+    z: 1
+    x: 5
+  - tilePrefab: {fileID: 3968621909630060229, guid: be22fff335fad1f42a4c406b38f2b7a1,
       type: 3}
     y: 2
     z: 1
-    x: 3
-  - tilePrefab: {fileID: 4504191293212317737, guid: 1ccf17b834172634e83b8d332e7bebd8,
+    x: 1
+  - tilePrefab: {fileID: 3968621909630060229, guid: be22fff335fad1f42a4c406b38f2b7a1,
+      type: 3}
+    y: 2
+    z: 1
+    x: 5
+  startingGamePieces:
+  - tilePrefab: {fileID: 2615503390953970680, guid: 71cc17942579f2f48bca6324512c5524,
+      type: 3}
+    y: 1
+    z: 0
+    x: 0
+  - tilePrefab: {fileID: 2615503390953970680, guid: 71cc17942579f2f48bca6324512c5524,
+      type: 3}
+    y: 2
+    z: 0
+    x: 0
+  - tilePrefab: {fileID: 5674535708065652008, guid: b5c22c8f773ccf84cb9cdc85f347effc,
+      type: 3}
+    y: 0
+    z: 0
+    x: 6
+  - tilePrefab: {fileID: 5674535708065652008, guid: b5c22c8f773ccf84cb9cdc85f347effc,
+      type: 3}
+    y: 1
+    z: 0
+    x: 6
+  - tilePrefab: {fileID: 5674535708065652008, guid: b5c22c8f773ccf84cb9cdc85f347effc,
+      type: 3}
+    y: 2
+    z: 0
+    x: 5
+  - tilePrefab: {fileID: 2615503390953970680, guid: 71cc17942579f2f48bca6324512c5524,
       type: 3}
     y: 3
-    z: 1
-    x: 3
-  - tilePrefab: {fileID: 4504191293212317737, guid: 1ccf17b834172634e83b8d332e7bebd8,
-      type: 3}
-    y: 4
-    z: 1
-    x: 3
-  - tilePrefab: {fileID: 4504191293212317737, guid: 1ccf17b834172634e83b8d332e7bebd8,
-      type: 3}
-    y: 5
-    z: 1
-    x: 3
-  - tilePrefab: {fileID: 4504191293212317737, guid: 1ccf17b834172634e83b8d332e7bebd8,
-      type: 3}
-    y: 5
-    z: 1
-    x: 3
-  - tilePrefab: {fileID: 826713112872809428, guid: 892d12a96d2453343a6d54d1882b7f76,
-      type: 3}
-    y: 5
-    z: 1
+    z: 0
     x: 1
-  - tilePrefab: {fileID: 826713112872809428, guid: 892d12a96d2453343a6d54d1882b7f76,
+  - tilePrefab: {fileID: 8544381951909040950, guid: c5b27717ac48b9e46a79c2a01da0a729,
       type: 3}
-    y: 5
-    z: 1
-    x: 5
-  - tilePrefab: {fileID: 3968621909630060229, guid: be22fff335fad1f42a4c406b38f2b7a1,
+    y: 0
+    z: 0
+    x: 0
+  - tilePrefab: {fileID: 8804768865105406484, guid: 922867eaf226538428bcba5d75f1e505,
       type: 3}
-    y: 2
-    z: 1
-    x: 1
-  - tilePrefab: {fileID: 3968621909630060229, guid: be22fff335fad1f42a4c406b38f2b7a1,
-      type: 3}
-    y: 2
-    z: 1
-    x: 5
+    y: 3
+    z: 0
+    x: 0
+  fillYOffset: 10
+  fillMoveTime: 0.5
 --- !u!4 &590199317
 Transform:
   m_ObjectHideFlags: 0
@@ -508,6 +534,8 @@ MonoBehaviour:
   breakFXPrefab: {fileID: 5215377549056767430, guid: 2f1ff4be9797d77468fb4ac0a3f4672a,
     type: 3}
   doublebreakFXPrefab: {fileID: 6487058882605512798, guid: 187d8b3713a8c6d4abe7fcae4b65d7c2,
+    type: 3}
+  bombEffectPrefab: {fileID: 3801404099323872200, guid: c1390a0beb421224f84757df162277ca,
     type: 3}
 --- !u!4 &1704961719
 Transform:
