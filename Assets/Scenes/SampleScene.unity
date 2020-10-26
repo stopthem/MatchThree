@@ -422,6 +422,12 @@ MonoBehaviour:
     type: 3}
   colorBombPrefab: {fileID: 8804768865105406484, guid: 922867eaf226538428bcba5d75f1e505,
     type: 3}
+  maxCollectibles: 3
+  collectibleCount: 0
+  chanceForCollectibe: 0.15
+  collectiblePrefabs:
+  - {fileID: 6692772422353694170, guid: 25b3b0a3f6a5501459a008d221c479de, type: 3}
+  - {fileID: 7653639755628723071, guid: bd35d543a49d90b408ce53ed5905375f, type: 3}
   startingTiles:
   - tilePrefab: {fileID: 826713112872809428, guid: 892d12a96d2453343a6d54d1882b7f76,
       type: 3}
