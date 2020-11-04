@@ -22,6 +22,7 @@ public class GamePiece : MonoBehaviour
     private Board board;
     
     public MatchValue matchValue;
+    public int scoreValue = 20;
     public void SetCoordination(int x, int y)
     {
         xIndex = x;
@@ -75,6 +76,13 @@ public class GamePiece : MonoBehaviour
                 renderertoChange.color = rendererToMatch.color;
             }
             matchValue = pieceToMatch.matchValue;
+        }
+    }
+    public void ScorePoints(int multipler = 1, int bonus = 0)
+    {
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.AddScore(scoreValue * multipler + bonus);
         }
     }
 }

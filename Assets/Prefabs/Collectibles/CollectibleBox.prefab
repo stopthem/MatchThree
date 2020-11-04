@@ -97,5 +97,6 @@ MonoBehaviour:
   xIndex: 0
   yIndex: 0
   matchValue: 9
+  scoreValue: 300
   clearedByBomb: 0
   clearedAtBottom: 1

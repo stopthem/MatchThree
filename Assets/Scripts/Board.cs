@@ -24,6 +24,9 @@ public class Board : MonoBehaviour
 
     public int maxCollectibles = 3 ;
     public int collectibleCount = 0 ;
+
+    private int scoreMultipler = 0;
+
     [Range(0,1)]
     public float chanceForCollectibe = .1f;
     public GameObject[] collectiblePrefabs;
@@ -563,6 +566,12 @@ public class Board : MonoBehaviour
             if (piece != null)
             {
                ClearPieceAt(piece.xIndex,piece.yIndex);
+               int bonus = 0;
+               if (gamePieces.Count >= 4)
+               {
+                   bonus = 20;
+               }
+               piece.ScorePoints(scoreMultipler);
                if (particleManager != null)
                {
                    if (bombedPieces.Contains(piece))
@@ -668,9 +677,10 @@ public class Board : MonoBehaviour
     {
         playerInputEnabled = false;
         List<GamePiece> matches = gamePieces;
-
+        scoreMultipler = 0;
         do
         {
+            scoreMultipler ++;
             yield return StartCoroutine(ClearAndCollapseRoutine(matches));
             yield return null;
 
@@ -750,6 +760,7 @@ public class Board : MonoBehaviour
             }
             else
             {
+                scoreMultipler++;
                 yield return StartCoroutine(ClearAndCollapseRoutine(matches));
             }
         }

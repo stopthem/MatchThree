@@ -99,6 +99,7 @@ MonoBehaviour:
   xIndex: 0
   yIndex: 0
   matchValue: 8
+  scoreValue: 150
   bombType: 3
 --- !u!1 &7666730791051993573
 GameObject:
