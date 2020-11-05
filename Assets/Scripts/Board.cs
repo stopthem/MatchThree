@@ -353,7 +353,7 @@ public class Board : MonoBehaviour
             }
         }
     }
-    bool isNextTo(Tile start, Tile end)
+    private bool isNextTo(Tile start, Tile end)
     {
         if (Mathf.Abs(start.xIndex - end.xIndex) == 1 && start.yIndex == end.yIndex)
         {
