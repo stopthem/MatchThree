@@ -94,4 +94,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce79d098e5e22a942933a3012792927c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  xIndex: 0
+  yIndex: 0
   matchValue: 5
+  scoreValue: 20
+  clearSound: {fileID: 8300000, guid: 6dce900c6b57748dbb2ee112588b2bd9, type: 3}
