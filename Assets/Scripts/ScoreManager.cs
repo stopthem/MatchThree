@@ -45,4 +45,8 @@ public class ScoreManager : Singleton<ScoreManager>
         counterValue = currentScore;
         UpdateScoreText(currentScore);
     }
+    public int GetCurrentScore()
+    {
+        return currentScore;
+    }
 }

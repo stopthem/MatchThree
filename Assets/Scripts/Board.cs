@@ -54,8 +54,13 @@ public class Board : MonoBehaviour
     
     private void Start()
     {
-        tileArray = new Tile[width,height];
-        gamePiecesArray = new GamePiece[width,height];
+        tileArray = new Tile[width, height];
+        gamePiecesArray = new GamePiece[width, height];
+        particleManager = GameObject.FindWithTag("ParticleManager").GetComponent<ParticleManager>();
+    }
+
+    public void SetupBoard()
+    {
         SetupTiles();
         SetupGamePieces();
 
@@ -63,10 +68,9 @@ public class Board : MonoBehaviour
         collectibleCount = startingCollectibles.Count();
 
         SetupCamera();
-        FillBoard(fillYOffset,fillMoveTime);
-        particleManager = GameObject.FindWithTag("ParticleManager").GetComponent<ParticleManager>();
-        // HighlightMatches();
+        FillBoard(fillYOffset, fillMoveTime);
     }
+
     void SetupTiles()
     {
         foreach (StartingObject sTile in startingTiles)
@@ -325,6 +329,11 @@ public class Board : MonoBehaviour
                     }
                     else
                     {
+                        if (GameManager.Instance != null)
+                        {
+                            GameManager.Instance.movesLeft--;
+                            GameManager.Instance.UpdateMoves();
+                        }
                         yield return new WaitForSeconds(moveSpeed);
                         Vector2 swipeDirection = new Vector2(targetTile.xIndex - clickedTile.xIndex, targetTile.yIndex - clickedTile.yIndex);
                         clickedTileBomb = DropBomb(clickedTile.xIndex, clickedTile.yIndex, swipeDirection, clickedPieceMatches);
@@ -566,12 +575,16 @@ public class Board : MonoBehaviour
             if (piece != null)
             {
                ClearPieceAt(piece.xIndex,piece.yIndex);
-               int bonus = 0;
+               int bonus;
                if (gamePieces.Count >= 4)
                {
                    bonus = 20;
                }
-               piece.ScorePoints(scoreMultipler);
+               else
+               {
+                   bonus = 0;
+               }
+               piece.ScorePoints(scoreMultipler,bonus);
                if (particleManager != null)
                {
                    if (bombedPieces.Contains(piece))
