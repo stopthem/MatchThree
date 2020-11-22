@@ -925,7 +925,7 @@ public class Board : MonoBehaviour
                         bomb = MakeBomb(colorBombPrefab,x,y);
                     }
                 }
-                if (swapDirection.x !=0)
+                else if (swapDirection.x !=0)
                 {
                     if (rowBombPrefab != null)
                     {
