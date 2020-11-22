@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using TMPro;
 
+[RequireComponent(typeof(BoardDeadLock))]
 public class Board : MonoBehaviour
 {
     public int height;
@@ -41,9 +43,14 @@ public class Board : MonoBehaviour
 
     public StartingObject[] startingTiles;
     public StartingObject[] startingGamePieces;
-
+    
+    public bool isRefilling = false;
     public int fillYOffset = 10;
     public float fillMoveTime = .5f;
+
+    public TextMeshProUGUI boardDeadlockText;
+
+    private BoardDeadLock boardDeadLock;
 
     [System.Serializable]
     public class StartingObject
@@ -57,6 +64,7 @@ public class Board : MonoBehaviour
         tileArray = new Tile[width, height];
         gamePiecesArray = new GamePiece[width, height];
         particleManager = GameObject.FindWithTag("ParticleManager").GetComponent<ParticleManager>();
+        boardDeadLock = GetComponent<BoardDeadLock>();
     }
 
     public void SetupBoard()
@@ -283,7 +291,7 @@ public class Board : MonoBehaviour
     }
     private IEnumerator SwitchTilesRoutine(Tile clickedTile, Tile targetTile)
     {
-        if (playerInputEnabled)
+        if (playerInputEnabled && !GameManager.Instance.IsGameOver)
         {
             if (isNextTo(clickedTile,targetTile))
             {
@@ -565,6 +573,10 @@ public class Board : MonoBehaviour
             for (int j = 0; j < height; j++)
             {
                 ClearPieceAt(i,j);
+                if (particleManager != null)
+                {
+                    particleManager.ClearPieceFXAt(i,j);
+                }
             }
         }
     }
@@ -689,6 +701,7 @@ public class Board : MonoBehaviour
     private IEnumerator ClearAndRefillBoardRoutine(List<GamePiece> gamePieces)
     {
         playerInputEnabled = false;
+        isRefilling = true;
         List<GamePiece> matches = gamePieces;
         scoreMultipler = 0;
         do
@@ -703,7 +716,17 @@ public class Board : MonoBehaviour
             yield return new WaitForSeconds(.5f);
         }
         while (matches.Count != 0);
+        if (boardDeadLock.IsDeadLocked(gamePiecesArray,3))
+        {
+            boardDeadlockText.gameObject.SetActive(true);
+            yield return new WaitForSeconds(3f);
+            ClearBoard();
+            yield return new WaitForSeconds(1f);
+            yield return StartCoroutine(RefillRoutine());
+            boardDeadlockText.gameObject.SetActive(false);
+        }
         playerInputEnabled = true;
+        isRefilling = false;
     }
     private IEnumerator RefillRoutine()
     {
@@ -1079,4 +1102,8 @@ public class Board : MonoBehaviour
         return null;
     }
 
+    public void TestDeadLock()
+    {
+        boardDeadLock.IsDeadLocked(gamePiecesArray,3);
+    }
 }
