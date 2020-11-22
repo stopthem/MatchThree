@@ -98,6 +98,9 @@ MonoBehaviour:
   yIndex: 0
   xIndex: 0
   tileType: 1
+  normalColor: {r: 0, g: 0, b: 0, a: 0}
+  breakableValue: 0
+  breakableSprites: []
 --- !u!61 &662668460773569605
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -115,12 +118,12 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.12, y: 5.12}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5}
+  m_Size: {x: 0.8, y: 0.8}
   m_EdgeRadius: 0

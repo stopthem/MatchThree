@@ -357,7 +357,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 111, y: -83}
+  m_AnchoredPosition: {x: 160, y: -149}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &78764565
@@ -986,8 +986,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a746d7caf64fc04891fb6002414b5a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movesLeft: 10
-  scoreGoal: 10000
+  movesLeft: 20
+  scoreGoal: 5000
   screenFader: {fileID: 1067641304}
   levelNameText: {fileID: 271615055}
   movesLeftText: {fileID: 1899799760}
@@ -1092,7 +1092,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   height: 9
   width: 7
-  borderSize: 2
+  borderSize: 1
   moveSpeed: 0.3
   tilePrefab: {fileID: 8698222726049960520, guid: 847004829f8c35240a73a17141d65825,
     type: 3}
@@ -1115,7 +1115,7 @@ MonoBehaviour:
     type: 3}
   maxCollectibles: 3
   collectibleCount: 0
-  chanceForCollectibe: 0.15
+  chanceForCollectibe: 0.1
   collectiblePrefabs:
   - {fileID: 6692772422353694170, guid: 25b3b0a3f6a5501459a008d221c479de, type: 3}
   - {fileID: 7653639755628723071, guid: bd35d543a49d90b408ce53ed5905375f, type: 3}
@@ -1140,47 +1140,7 @@ MonoBehaviour:
     y: 2
     z: 1
     x: 5
-  startingGamePieces:
-  - tilePrefab: {fileID: 2615503390953970680, guid: 71cc17942579f2f48bca6324512c5524,
-      type: 3}
-    y: 1
-    z: 0
-    x: 0
-  - tilePrefab: {fileID: 2615503390953970680, guid: 71cc17942579f2f48bca6324512c5524,
-      type: 3}
-    y: 2
-    z: 0
-    x: 0
-  - tilePrefab: {fileID: 5674535708065652008, guid: b5c22c8f773ccf84cb9cdc85f347effc,
-      type: 3}
-    y: 0
-    z: 0
-    x: 6
-  - tilePrefab: {fileID: 5674535708065652008, guid: b5c22c8f773ccf84cb9cdc85f347effc,
-      type: 3}
-    y: 1
-    z: 0
-    x: 6
-  - tilePrefab: {fileID: 5674535708065652008, guid: b5c22c8f773ccf84cb9cdc85f347effc,
-      type: 3}
-    y: 2
-    z: 0
-    x: 5
-  - tilePrefab: {fileID: 2615503390953970680, guid: 71cc17942579f2f48bca6324512c5524,
-      type: 3}
-    y: 3
-    z: 0
-    x: 1
-  - tilePrefab: {fileID: 8544381951909040950, guid: c5b27717ac48b9e46a79c2a01da0a729,
-      type: 3}
-    y: 0
-    z: 0
-    x: 0
-  - tilePrefab: {fileID: 8804768865105406484, guid: 922867eaf226538428bcba5d75f1e505,
-      type: 3}
-    y: 3
-    z: 0
-    x: 0
+  startingGamePieces: []
   fillYOffset: 10
   fillMoveTime: 0.5
 --- !u!4 &590199317
@@ -2096,7 +2056,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 120.2, y: -33}
+  m_AnchoredPosition: {x: 169.20004, y: -99.000175}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1899799760

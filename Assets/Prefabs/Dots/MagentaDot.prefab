@@ -97,5 +97,5 @@ MonoBehaviour:
   xIndex: 0
   yIndex: 0
   matchValue: 3
-  scoreValue: 20
+  scoreValue: 70
   clearSound: {fileID: 8300000, guid: 6dce900c6b57748dbb2ee112588b2bd9, type: 3}

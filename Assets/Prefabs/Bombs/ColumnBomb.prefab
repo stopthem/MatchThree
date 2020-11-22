@@ -99,7 +99,7 @@ MonoBehaviour:
   xIndex: 0
   yIndex: 0
   matchValue: 8
-  scoreValue: 100
+  scoreValue: 250
   clearSound: {fileID: 8300000, guid: eadcfb9a0c2cb4bea8112ac470640c8e, type: 3}
   bombType: 1
 --- !u!1 &4404203932484251563
