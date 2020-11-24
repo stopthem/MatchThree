@@ -80,15 +80,4 @@ public class GamePiece : MonoBehaviour
             matchValue = pieceToMatch.matchValue;
         }
     }
-    public void ScorePoints(int multipler = 1, int bonus = 0)
-    {
-        if (ScoreManager.Instance != null)
-        {
-            ScoreManager.Instance.AddScore(scoreValue * multipler + bonus);
-        }
-        if (SoundManager.Instance !=null)
-        {
-            SoundManager.Instance.PlayClipAtPoint(clearSound,Vector3.zero,SoundManager.Instance.fxVolume);
-        }
-    }
 }

@@ -5,15 +5,19 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(LevelGoal))]
 public class GameManager : Singleton<GameManager>
 {
-    public int movesLeft = 30;
-    public int scoreGoal = 10000;
+    // public int movesLeft = 30;
+    // public int scoreGoal = 10000;
 
     public ScreenFader screenFader;
     public TextMeshProUGUI levelNameText;
     public TextMeshProUGUI movesLeftText;
     private Board board;
+
+    private LevelGoal levelGoal;
+    public ScoreMeter scoreMeter;
 
     private bool isReadyToBegin = false;
     private bool isGameOver = false;
@@ -25,24 +29,35 @@ public class GameManager : Singleton<GameManager>
 
     public bool IsGameOver { get => isGameOver; set => isGameOver = value; }
 
+    public override void Awake()
+    {
+        base.Awake();
+        levelGoal = GetComponent<LevelGoal>();
+        board = GameObject.FindObjectOfType<Board>().GetComponent<Board>();
+    }
+
     private void Start()
     {
-        board = GameObject.FindObjectOfType<Board>().GetComponent<Board>();
-
+        if (scoreMeter != null)
+        {
+            scoreMeter.SetupStars(levelGoal);
+        }
         Scene scene = SceneManager.GetActiveScene();
 
         if (levelNameText != null)
         {
             levelNameText.text = scene.name;
         }
+        levelGoal.movesLeft++;
         UpdateMoves();
         StartCoroutine(ExecuteGameLoop());
     }
-    public void UpdateMoves()
+    public void UpdateMoves() 
     {
+        levelGoal.movesLeft--;
         if (movesLeftText !=null)
         {
-            movesLeftText.text = movesLeft.ToString();
+            movesLeftText.text = levelGoal.movesLeft.ToString();
         }
     }
     private IEnumerator ExecuteGameLoop()
@@ -61,7 +76,7 @@ public class GameManager : Singleton<GameManager>
         if (messageWindow != null)
         {
             messageWindow.GetComponent<RectXformMover>().MoveOn();
-            messageWindow.ShowMessage(goalIcon,"SCORE GOAL \n"+ scoreGoal.ToString(),"START");
+            messageWindow.ShowMessage(goalIcon,"SCORE GOAL \n"+ levelGoal.scoreGoals[0].ToString(),"START");
         }
         while (!isReadyToBegin)
         {
@@ -82,19 +97,8 @@ public class GameManager : Singleton<GameManager>
     {
         while (!IsGameOver)
         {
-            if (ScoreManager.Instance != null)
-            {
-                if (ScoreManager.Instance.GetCurrentScore() >= scoreGoal)
-                {
-                    IsGameOver = true;
-                    isWinner = true;
-                }
-            }
-            if (movesLeft <= 0)
-            {
-                IsGameOver = true;
-                isWinner = false;
-            }
+            isGameOver = levelGoal.IsGameOver();
+            isWinner = levelGoal.IsWinner();
             yield return null;
         }
     }
@@ -155,5 +159,23 @@ public class GameManager : Singleton<GameManager>
     public void ReloadScene()
     {
         isReadyToReload = true;
+    }
+
+    public void ScorePoints(GamePiece piece,int multipler = 1, int bonus = 0)
+    {
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.AddScore(piece.scoreValue * multipler + bonus);
+            levelGoal.UpdateScoreStars(ScoreManager.Instance.GetCurrentScore());
+            
+            if (scoreMeter != null)
+            {
+                scoreMeter.UpdateScoreMeter(ScoreManager.Instance.GetCurrentScore(),levelGoal.scoreStars);
+            }
+        }
+        if (SoundManager.Instance !=null && piece.clearSound != null)
+        {
+            SoundManager.Instance.PlayClipAtPoint(piece.clearSound,Vector3.zero,SoundManager.Instance.fxVolume);
+        }
     }
 }

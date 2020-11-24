@@ -6,11 +6,15 @@ public class ParticlePlay : MonoBehaviour
 {
     public ParticleSystem[] particleArray;
     public float lifeTime = 1f;
+    public bool destroyImmedietly = true;
     // Start is called before the first frame update
     void Start()
     {
         particleArray = GetComponentsInChildren<ParticleSystem>();
-        Destroy(gameObject,lifeTime);
+        if (destroyImmedietly)
+        {
+            Destroy(gameObject,lifeTime);
+        }
     }
 
     public void Play()
@@ -20,5 +24,6 @@ public class ParticlePlay : MonoBehaviour
             particleSystem.Stop();
             particleSystem.Play();
         }
+        Destroy(gameObject,lifeTime);
     }
 }

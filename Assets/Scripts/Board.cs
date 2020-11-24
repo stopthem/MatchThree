@@ -378,7 +378,7 @@ public class Board : MonoBehaviour
                     {
                         if (GameManager.Instance != null)
                         {
-                            GameManager.Instance.movesLeft--;
+                            // LevelGoal.Instance.movesLeft--;
                             GameManager.Instance.UpdateMoves();
                         }
                         yield return new WaitForSeconds(moveSpeed);
@@ -635,7 +635,11 @@ public class Board : MonoBehaviour
                {
                    bonus = 0;
                }
-               piece.ScorePoints(scoreMultipler,bonus);
+               if (GameManager.Instance != null)
+               {
+                   GameManager.Instance.ScorePoints(piece,scoreMultipler,bonus);
+               }
+               
                if (particleManager != null)
                {
                    if (bombedPieces.Contains(piece))
