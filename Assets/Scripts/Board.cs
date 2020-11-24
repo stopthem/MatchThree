@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using TMPro;
 
+[RequireComponent(typeof(BoardShuffler))]
 [RequireComponent(typeof(BoardDeadLock))]
 public class Board : MonoBehaviour
 {
@@ -52,6 +53,8 @@ public class Board : MonoBehaviour
 
     private BoardDeadLock boardDeadLock;
 
+    private BoardShuffler boardShuffler;
+
     [System.Serializable]
     public class StartingObject
     {
@@ -65,6 +68,7 @@ public class Board : MonoBehaviour
         gamePiecesArray = new GamePiece[width, height];
         particleManager = GameObject.FindWithTag("ParticleManager").GetComponent<ParticleManager>();
         boardDeadLock = GetComponent<BoardDeadLock>();
+        boardShuffler = GetComponent<BoardShuffler>();
     }
 
     public void SetupBoard()
@@ -209,6 +213,41 @@ public class Board : MonoBehaviour
         return null;
         
     }
+
+    private void FillBoardFromList(List<GamePiece> gamePieces)
+    {
+        Queue<GamePiece> unusedPieces = new Queue<GamePiece>(gamePieces);
+
+        int maxInterations = 100;
+        int iterations = 0;
+
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (gamePiecesArray[i,j] == null && tileArray[i,j].tileType != Tile.TileType.Obstacle)
+                {
+                    gamePiecesArray[i,j] = unusedPieces.Dequeue();
+
+                    iterations = 0;
+
+                    while (HasMatchOnFill(i,j))
+                    {
+                        unusedPieces.Enqueue(gamePiecesArray[i,j]);
+                        gamePiecesArray[i,j] = unusedPieces.Dequeue();
+
+                        iterations++;
+
+                        if (iterations >= maxInterations)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private void FillBoard(int falseYOffset = 0 , float moveTime = .1f)
     {
         int maxInterations = 100;
@@ -720,7 +759,8 @@ public class Board : MonoBehaviour
         {
             boardDeadlockText.gameObject.SetActive(true);
             yield return new WaitForSeconds(3f);
-            ClearBoard();
+            // ClearBoard();
+            yield return StartCoroutine(ShuffleBoardRoutine());
             yield return new WaitForSeconds(1f);
             yield return StartCoroutine(RefillRoutine());
             boardDeadlockText.gameObject.SetActive(false);
@@ -813,6 +853,10 @@ public class Board : MonoBehaviour
             if (piece != null)
             {
                 if (piece.transform.position.y - (float)piece.yIndex > 0.001f)
+                {
+                    return false;
+                }
+                if (piece.transform.position.x - (float)piece.xIndex > 0.001f)
                 {
                     return false;
                 }
@@ -1105,5 +1149,38 @@ public class Board : MonoBehaviour
     public void TestDeadLock()
     {
         boardDeadLock.IsDeadLocked(gamePiecesArray,3);
+    }
+
+    public void ShuffleBoard()
+    {
+        if (playerInputEnabled)
+        {
+            StartCoroutine(ShuffleBoardRoutine());
+        }
+        
+    }
+    private IEnumerator ShuffleBoardRoutine()
+    {
+        List<GamePiece> allgamePieces = new List<GamePiece>();
+        foreach (GamePiece piece in gamePiecesArray)
+        {
+            allgamePieces.Add(piece);
+        }
+
+        while (!IsCollapsed(allgamePieces))
+        {
+            yield return null;
+        }
+
+        List<GamePiece> normalPieces = boardShuffler.RemoveNormalPieces(gamePiecesArray);
+
+        boardShuffler.ShuffleList(normalPieces);
+
+        FillBoardFromList(normalPieces);
+
+        boardShuffler.MovePieces(gamePiecesArray,.5f);
+
+        List<GamePiece> matches = FindAllMatches();
+        StartCoroutine(ClearAndRefillBoardRoutine(matches));
     }
 }
