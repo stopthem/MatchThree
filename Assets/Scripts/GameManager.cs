@@ -17,6 +17,7 @@ public class GameManager : Singleton<GameManager>
     private Board board;
 
     private LevelGoal levelGoal;
+    private LevelGoalTimed levelGoalTimed;
     public ScoreMeter scoreMeter;
 
     private bool isReadyToBegin = false;
@@ -34,6 +35,7 @@ public class GameManager : Singleton<GameManager>
         base.Awake();
         levelGoal = GetComponent<LevelGoal>();
         board = GameObject.FindObjectOfType<Board>().GetComponent<Board>();
+        levelGoalTimed = GetComponent<LevelGoalTimed>();
     }
 
     private void Start()
@@ -54,10 +56,20 @@ public class GameManager : Singleton<GameManager>
     }
     public void UpdateMoves() 
     {
-        levelGoal.movesLeft--;
-        if (movesLeftText !=null)
+        if (levelGoalTimed != null)
         {
-            movesLeftText.text = levelGoal.movesLeft.ToString();
+            levelGoalTimed.movesLeft--;
+            if (movesLeftText !=null)
+            {
+                movesLeftText.text = levelGoal.movesLeft.ToString();
+            }
+        }
+        else
+        {
+            if (movesLeftText != null)
+            {
+                movesLeftText.text = "\u221E";
+            }
         }
     }
     private IEnumerator ExecuteGameLoop()
@@ -95,6 +107,10 @@ public class GameManager : Singleton<GameManager>
     }
     private IEnumerator PlayGameRoutine()
     {
+        if (levelGoalTimed != null)
+        {
+            levelGoalTimed.StartCountDown();
+        }
         while (!IsGameOver)
         {
             isGameOver = levelGoal.IsGameOver();
@@ -105,6 +121,16 @@ public class GameManager : Singleton<GameManager>
 
     private IEnumerator WaitForBoardRoutine(float delay = .5f)
     {
+
+        if (levelGoalTimed != null)
+        {
+            if (levelGoalTimed.timer != null)
+            {
+                levelGoalTimed.timer.FadeOff();
+                levelGoalTimed.timer.paused = true;
+            }
+        }
+
         if (board != null)
         {
             yield return new WaitForSeconds(board.fillMoveTime);
