@@ -6042,7 +6042,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreStars: 0
-  scoreGoals: 64000000fa000000f4010000
+  scoreGoals: d007000088130000581b0000
   movesLeft: 5
 --- !u!1 &569122629
 GameObject:
