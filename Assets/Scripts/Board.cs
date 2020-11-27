@@ -376,11 +376,6 @@ public class Board : MonoBehaviour
                     }
                     else
                     {
-                        if (GameManager.Instance != null)
-                        {
-                            // LevelGoal.Instance.movesLeft--;
-                            GameManager.Instance.UpdateMoves();
-                        }
                         yield return new WaitForSeconds(moveSpeed);
                         Vector2 swipeDirection = new Vector2(targetTile.xIndex - clickedTile.xIndex, targetTile.yIndex - clickedTile.yIndex);
                         clickedTileBomb = DropBomb(clickedTile.xIndex, clickedTile.yIndex, swipeDirection, clickedPieceMatches);
@@ -403,7 +398,16 @@ public class Board : MonoBehaviour
                             }
                             
                         }
-                        ClearAndRefillBoard(clickedPieceMatches.Union(targetPieceMatches).ToList().Union(colorMatches).ToList());
+                        List<GamePiece> piecesToClear = clickedPieceMatches.Union(targetPieceMatches).ToList().Union(colorMatches).ToList();
+                        yield return StartCoroutine(ClearAndRefillBoardRoutine(piecesToClear));
+
+                        yield return new WaitForSeconds(.5f);
+
+                        if (GameManager.Instance != null)
+                        {
+                            // LevelGoal.Instance.movesLeft--;
+                            GameManager.Instance.UpdateMoves();
+                        }
                     }
                 }
             }
@@ -645,6 +649,7 @@ public class Board : MonoBehaviour
                    {
                        GameManager.Instance.AddTime(timeBonus.bonusValue);
                    }
+                   GameManager.Instance.UpdateCollectionGoals(piece);
                }
                
                if (particleManager != null)

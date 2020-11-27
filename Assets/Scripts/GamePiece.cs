@@ -15,6 +15,7 @@ public enum MatchValue{
         Wild,
         None
     }
+[RequireComponent(typeof(SpriteRenderer))]
 public class GamePiece : MonoBehaviour
 {
     public int xIndex;

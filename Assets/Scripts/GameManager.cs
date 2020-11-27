@@ -12,12 +12,15 @@ public class GameManager : Singleton<GameManager>
     // public int scoreGoal = 10000;
 
     public ScreenFader screenFader;
+
     public TextMeshProUGUI levelNameText;
     public TextMeshProUGUI movesLeftText;
+
     private Board board;
 
     private LevelGoal levelGoal;
     private LevelGoalTimed levelGoalTimed;
+    private LevelGoalCollected levelGoalCollected;
     public LevelGoalTimed levelgoalTimed {get{return levelGoalTimed;}}
     public ScoreMeter scoreMeter;
 
@@ -37,6 +40,7 @@ public class GameManager : Singleton<GameManager>
         levelGoal = GetComponent<LevelGoal>();
         board = GameObject.FindObjectOfType<Board>().GetComponent<Board>();
         levelGoalTimed = GetComponent<LevelGoalTimed>();
+        levelGoalCollected = GetComponent<LevelGoalCollected>();
     }
 
     private void Start()
@@ -211,6 +215,14 @@ public class GameManager : Singleton<GameManager>
         if (levelGoalTimed != null)
         {
             levelGoalTimed.AddTime(timeValue);
+        }
+    }
+
+    public void UpdateCollectionGoals(GamePiece pieceToCheck)
+    {
+        if (levelGoalCollected != null)
+        {
+            levelGoalCollected.UpdateGoals(pieceToCheck);
         }
     }
 }
