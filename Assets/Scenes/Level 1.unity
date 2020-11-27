@@ -6103,7 +6103,7 @@ MonoBehaviour:
   scoreStars: 0
   scoreGoals: 64000000c80000002c010000
   movesLeft: 20
-  timeLeft: 15
+  timeLeft: 60
   timer: {fileID: 454312252}
 --- !u!1 &569122629
 GameObject:

@@ -18,6 +18,7 @@ public class GameManager : Singleton<GameManager>
 
     private LevelGoal levelGoal;
     private LevelGoalTimed levelGoalTimed;
+    public LevelGoalTimed levelgoalTimed {get{return levelGoalTimed;}}
     public ScoreMeter scoreMeter;
 
     private bool isReadyToBegin = false;
@@ -202,6 +203,14 @@ public class GameManager : Singleton<GameManager>
         if (SoundManager.Instance !=null && piece.clearSound != null)
         {
             SoundManager.Instance.PlayClipAtPoint(piece.clearSound,Vector3.zero,SoundManager.Instance.fxVolume);
+        }
+    }
+
+    public void AddTime(int timeValue)
+    {
+        if (levelGoalTimed != null)
+        {
+            levelGoalTimed.AddTime(timeValue);
         }
     }
 }

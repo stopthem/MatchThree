@@ -6,12 +6,16 @@ public class LevelGoalTimed : LevelGoal
 {
     public Timer timer;
 
+    private int maxTime;
+
     private void Start()
     {
         if (timer != null)
         {
             timer.InitTimer(timeLeft);
         }
+
+        maxTime = timeLeft;
     }
     public void StartCountDown()
     {
@@ -51,4 +55,17 @@ public class LevelGoalTimed : LevelGoal
         }
         return(timeLeft <= 0);
     }
+    
+    public void AddTime(int timeValue)
+    {
+        timeLeft += timeValue;
+        timeLeft = Mathf.Clamp(timeLeft,0,maxTime);
+
+        if (timer != null)
+        {
+            timer.UpdateTimer(timeLeft);
+        }
+    }
+
+    
 }
