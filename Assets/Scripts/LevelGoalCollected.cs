@@ -6,6 +6,7 @@ public class LevelGoalCollected : LevelGoal
 {
 
     public CollectionGoal[] collectionGoals;
+    public CollectionGoalPanel[] uiPanels;
 
     public void UpdateGoals(GamePiece pieceToCheck)
     {
@@ -18,6 +19,15 @@ public class LevelGoalCollected : LevelGoal
                     goal.CollectPiece(pieceToCheck);
                 }
             }
+        }
+        UpdateUI();
+    }
+
+    public void UpdateUI()
+    {
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateCollectionGoalLayout();
         }
     }
 
@@ -42,7 +52,14 @@ public class LevelGoalCollected : LevelGoal
                 return true;
             }
         }
-        return (movesLeft <= 0);
+        if (levelCounter == LevelCounter.Timer)
+        {
+            return(timeLeft <= 0);
+        }
+        else
+        {
+            return(movesLeft <= 0);
+        }
     }
 
     public override bool IsWinner()

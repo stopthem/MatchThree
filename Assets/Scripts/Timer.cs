@@ -9,7 +9,7 @@ public class Timer : MonoBehaviour
     public TextMeshProUGUI timeLeftText;
     public Image clockImage;
 
-    int maxTime = 60;
+    private int maxTime = 60;
 
     public int flashTimeLimit = 10;
     public AudioClip flashBeep;

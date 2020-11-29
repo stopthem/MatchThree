@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class LevelGoalScored : LevelGoal
 {
+    public override void Start()
+    {
+        levelCounter = LevelCounter.Moves;
+        base.Start();
+    }
     
     public override bool IsWinner()
     {

@@ -26,7 +26,7 @@ public class TimeBonus : MonoBehaviour
 
         if (GameManager.Instance != null)
         {
-            if (GameManager.Instance.levelgoalTimed == null)
+            if (GameManager.Instance.levelGoal.levelCounter == LevelCounter.Moves)
             {
                 bonusValue = 0;
             }

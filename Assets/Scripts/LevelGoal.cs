@@ -2,15 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum LevelCounter
+{
+    Timer,
+    Moves
+}
 public abstract class LevelGoal : Singleton<LevelGoal>
 {
     public int scoreStars = 0;
+    private int maxTime;
     public int[] scoreGoals = new int[3] {1000,2000,3000};
 
     public int movesLeft = 20;
     public int timeLeft = 60;
-    private void Start()
+    public LevelCounter levelCounter = LevelCounter.Moves;
+    public virtual void Start()
     {
+        if (levelCounter == LevelCounter.Timer)
+        {
+            maxTime = timeLeft;
+            if (UIManager.Instance != null && UIManager.Instance.timer != null)
+            {
+                UIManager.Instance.timer.InitTimer(timeLeft);
+            }
+        }
         
     }
 
@@ -31,4 +46,33 @@ public abstract class LevelGoal : Singleton<LevelGoal>
     }
     public abstract bool IsWinner();
     public abstract bool IsGameOver();
+
+    public void StartCountDown()
+    {
+        StartCoroutine(CountdownRoutine());
+    }
+
+    private IEnumerator CountdownRoutine()
+    {
+        while (timeLeft > 0 )
+        {
+            yield return new WaitForSeconds(1f);
+            timeLeft--;
+
+            if (UIManager.Instance != null && UIManager.Instance.timer != null)
+            {
+                UIManager.Instance.timer.UpdateTimer(timeLeft);
+            }
+        }
+    }
+    public void AddTime(int timeValue)
+    {
+        timeLeft += timeValue;
+        timeLeft = Mathf.Clamp(timeLeft,0,maxTime);
+
+        if (UIManager.Instance != null &&  UIManager.Instance.timer != null)
+        {
+            UIManager.Instance.timer.UpdateTimer(timeLeft);
+        }
+    }
 }
