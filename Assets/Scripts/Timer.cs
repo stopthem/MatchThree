@@ -9,7 +9,7 @@ public class Timer : MonoBehaviour
     public TextMeshProUGUI timeLeftText;
     public Image clockImage;
 
-    private int maxTime = 60;
+    private int m_maxTime = 60;
 
     public int flashTimeLimit = 10;
     public AudioClip flashBeep;
@@ -22,7 +22,7 @@ public class Timer : MonoBehaviour
 
     public void InitTimer(int maxTime = 60)
     {
-        this.maxTime = maxTime;
+        m_maxTime = maxTime;
         if (timeLeftText != null)
         {
             timeLeftText.text = maxTime.ToString();
@@ -37,15 +37,15 @@ public class Timer : MonoBehaviour
 
         if (clockImage != null)
         {
-            clockImage.fillAmount = (float)currentTime / (float)maxTime;
+            clockImage.fillAmount = (float)currentTime / (float)m_maxTime;
             if (currentTime <= flashTimeLimit)
             {
-                flashRoutine = FlashRoutine(clockImage,flashColor,flashInterval);
+                flashRoutine = FlashRoutine(clockImage, flashColor, flashInterval);
                 StartCoroutine(flashRoutine);
 
                 if (SoundManager.Instance != null && flashBeep)
                 {
-                    SoundManager.Instance.PlayClipAtPoint(flashBeep,Vector3.zero,SoundManager.Instance.fxVolume,false);
+                    SoundManager.Instance.PlayClipAtPoint(flashBeep, Vector3.zero, SoundManager.Instance.fxVolume, false);
                 }
             }
         }
@@ -57,15 +57,15 @@ public class Timer : MonoBehaviour
 
     }
 
-    private IEnumerator FlashRoutine(Image image,Color targetColor,float interval)
+    private IEnumerator FlashRoutine(Image image, Color targetColor, float interval)
     {
         if (image != null)
         {
             Color originalColor = image.color;
-            image.CrossFadeColor(targetColor,interval * .3f,true,true);
+            image.CrossFadeColor(targetColor, interval * .3f, true, true);
             yield return new WaitForSeconds(interval * .5f);
 
-            image.CrossFadeColor(originalColor,interval * .3f,true,true);
+            image.CrossFadeColor(originalColor, interval * .3f, true, true);
             yield return new WaitForSeconds(interval * .5f);
         }
     }

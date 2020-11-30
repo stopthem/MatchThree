@@ -40,7 +40,7 @@ public class Board : MonoBehaviour
 
     private bool playerInputEnabled = true;
 
-    private ParticleManager particleManager;
+    private ParticleManager m_particleManager;
 
     public StartingObject[] startingTiles;
     public StartingObject[] startingGamePieces;
@@ -51,9 +51,9 @@ public class Board : MonoBehaviour
 
     public TextMeshProUGUI boardDeadlockText;
 
-    private BoardDeadLock boardDeadLock;
+    private BoardDeadLock m_boardDeadlock;
 
-    private BoardShuffler boardShuffler;
+    private BoardShuffler m_boardShuffler;
 
     [System.Serializable]
     public class StartingObject
@@ -66,9 +66,9 @@ public class Board : MonoBehaviour
     {
         tileArray = new Tile[width, height];
         gamePiecesArray = new GamePiece[width, height];
-        particleManager = GameObject.FindWithTag("ParticleManager").GetComponent<ParticleManager>();
-        boardDeadLock = GetComponent<BoardDeadLock>();
-        boardShuffler = GetComponent<BoardShuffler>();
+        m_particleManager = GameObject.FindWithTag("ParticleManager").GetComponent<ParticleManager>();
+        m_boardDeadlock = GetComponent<BoardDeadLock>();
+        m_boardShuffler = GetComponent<BoardShuffler>();
     }
 
     public void SetupBoard()
@@ -616,9 +616,9 @@ public class Board : MonoBehaviour
             for (int j = 0; j < height; j++)
             {
                 ClearPieceAt(i, j);
-                if (particleManager != null)
+                if (m_particleManager != null)
                 {
-                    particleManager.ClearPieceFXAt(i, j);
+                    m_particleManager.ClearPieceFXAt(i, j);
                 }
             }
         }
@@ -652,15 +652,15 @@ public class Board : MonoBehaviour
                     GameManager.Instance.UpdateCollectionGoals(piece);
                 }
 
-                if (particleManager != null)
+                if (m_particleManager != null)
                 {
                     if (bombedPieces.Contains(piece))
                     {
-                        particleManager.BombFXAt(piece.xIndex, piece.yIndex);
+                        m_particleManager.BombFXAt(piece.xIndex, piece.yIndex);
                     }
                     else
                     {
-                        particleManager.ClearPieceFXAt(piece.xIndex, piece.yIndex);
+                        m_particleManager.ClearPieceFXAt(piece.xIndex, piece.yIndex);
                     }
 
                 }
@@ -679,9 +679,9 @@ public class Board : MonoBehaviour
         Tile tileToBreak = tileArray[x, y];
         if (tileToBreak != null && tileToBreak.tileType == Tile.TileType.Breakable)
         {
-            if (particleManager != null)
+            if (m_particleManager != null)
             {
-                particleManager.BreakTileFXAt(tileToBreak.breakableValue, x, y);
+                m_particleManager.BreakTileFXAt(tileToBreak.breakableValue, x, y);
             }
             tileToBreak.BreakTile();
         }
@@ -771,7 +771,7 @@ public class Board : MonoBehaviour
             yield return new WaitForSeconds(.5f);
         }
         while (matches.Count != 0);
-        if (boardDeadLock.IsDeadLocked(gamePiecesArray, 3))
+        if (m_boardDeadlock.IsDeadLocked(gamePiecesArray, 3))
         {
             boardDeadlockText.gameObject.SetActive(true);
             yield return new WaitForSeconds(3f);
@@ -1164,7 +1164,7 @@ public class Board : MonoBehaviour
 
     public void TestDeadLock()
     {
-        boardDeadLock.IsDeadLocked(gamePiecesArray, 3);
+        m_boardDeadlock.IsDeadLocked(gamePiecesArray, 3);
     }
 
     public void ShuffleBoard()
@@ -1188,13 +1188,13 @@ public class Board : MonoBehaviour
             yield return null;
         }
 
-        List<GamePiece> normalPieces = boardShuffler.RemoveNormalPieces(gamePiecesArray);
+        List<GamePiece> normalPieces = m_boardShuffler.RemoveNormalPieces(gamePiecesArray);
 
-        boardShuffler.ShuffleList(normalPieces);
+        m_boardShuffler.ShuffleList(normalPieces);
 
         FillBoardFromList(normalPieces);
 
-        boardShuffler.MovePieces(gamePiecesArray, .5f);
+        m_boardShuffler.MovePieces(gamePiecesArray, .5f);
 
         List<GamePiece> matches = FindAllMatches();
         StartCoroutine(ClearAndRefillBoardRoutine(matches));

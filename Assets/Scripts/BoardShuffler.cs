@@ -15,15 +15,15 @@ public class BoardShuffler : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                if (allPieces[i,j] != null)
+                if (allPieces[i, j] != null)
                 {
-                    Bomb bomb = allPieces[i,j].GetComponent<Bomb>();
-                    Collectible collectible = allPieces[i,j].GetComponent<Collectible>();
+                    Bomb bomb = allPieces[i, j].GetComponent<Bomb>();
+                    Collectible collectible = allPieces[i, j].GetComponent<Collectible>();
 
                     if (bomb == null && collectible == null)
                     {
-                        normalPieces.Add(allPieces[i,j]);
-                        allPieces[i,j] = null;
+                        normalPieces.Add(allPieces[i, j]);
+                        allPieces[i, j] = null;
                     }
                 }
             }
@@ -37,7 +37,7 @@ public class BoardShuffler : MonoBehaviour
 
         for (int i = 0; i < maxCount - 1; i++)
         {
-            int r = Random.Range(i,maxCount);
+            int r = Random.Range(i, maxCount);
 
             if (r == i)
             {
@@ -59,10 +59,10 @@ public class BoardShuffler : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                if (allPieces[i,j] != null)
+                if (allPieces[i, j] != null)
                 {
-                    allPieces[i,j].Move(i,j,swapTime);
-                }                
+                    allPieces[i, j].Move(i, j, swapTime);
+                }
             }
         }
     }

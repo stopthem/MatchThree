@@ -11,15 +11,15 @@ public class UIManager : Singleton<UIManager>
     public TextMeshProUGUI levelNameText;
     public TextMeshProUGUI movesLeftText;
     public MessageWindow messageWindow;
-    public ScoreMeter scoreMeter;
 
-    public GameObject collectionGoalLayout;
+    public ScoreMeter scoreMeter;
     public GameObject movesCounter;
 
     public Timer timer;
 
+    public GameObject collectionGoalLayout;
     public int collectionGoalBaseWidth = 125;
-    CollectionGoalPanel[] collectionGoalPanels;
+    private CollectionGoalPanel[] m_collectionGoalPanels;
 
     public override void Awake()
     {
@@ -35,36 +35,51 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    public void SetupCollectionGoalLayout(CollectionGoal[] collectionGoals)
+    public void SetupCollectionGoalLayout(CollectionGoal[] collectionGoals, GameObject goalLayout, int spacingWidth)
     {
-        if (collectionGoalLayout != null && collectionGoals != null && collectionGoals.Length != 0)
+        if (goalLayout != null && collectionGoals != null && collectionGoals.Length != 0)
         {
-            RectTransform rectXFrom = collectionGoalLayout.GetComponent<RectTransform>();
-            rectXFrom.sizeDelta = new Vector2(collectionGoals.Length * collectionGoalBaseWidth, rectXFrom.sizeDelta.y);
-            collectionGoalPanels = collectionGoalLayout.gameObject.GetComponentsInChildren<CollectionGoalPanel>();
+            RectTransform rectXFrom = goalLayout.GetComponent<RectTransform>();
+            rectXFrom.sizeDelta = new Vector2(collectionGoals.Length * spacingWidth, rectXFrom.sizeDelta.y);
+            CollectionGoalPanel[] panels = goalLayout.gameObject.GetComponentsInChildren<CollectionGoalPanel>();
 
-            for (int i = 0; i < collectionGoalPanels.Length; i++)
+            for (int i = 0; i < panels.Length; i++)
             {
                 if (i < collectionGoals.Length && collectionGoals[i] != null)
                 {
-                    collectionGoalPanels[i].gameObject.SetActive(true);
-                    collectionGoalPanels[i].collectionGoal = collectionGoals[i];
-                    collectionGoalPanels[i].SetupPanel();
+                    panels[i].gameObject.SetActive(true);
+                    panels[i].collectionGoal = collectionGoals[i];
+                    panels[i].SetupPanel();
                 }
                 else
                 {
-                    collectionGoalPanels[i].gameObject.SetActive(false);
+                    panels[i].gameObject.SetActive(false);
                 }
             }
         }
     }
+    public void SetupCollectionGoalLayout(CollectionGoal[] collectionGoals)
+    {
+        SetupCollectionGoalLayout(collectionGoals, collectionGoalLayout, collectionGoalBaseWidth);
+    }
 
+    public void UpdateCollectionGoalLayout(GameObject goalLayout)
+    {
+        if (goalLayout != null)
+        {
+            CollectionGoalPanel[] panels = goalLayout.GetComponentsInChildren<CollectionGoalPanel>();
+            if (panels != null && panels.Length != 0)
+            {
+                foreach (CollectionGoalPanel panel in panels)
+                {
+                    panel.UpdatePanel();
+                }
+            }
+        }
+    }
     public void UpdateCollectionGoalLayout()
     {
-        foreach (CollectionGoalPanel panel in collectionGoalPanels)
-        {
-            panel.UpdatePanel();
-        }
+        UpdateCollectionGoalLayout(collectionGoalLayout);
     }
 
     public void EnableTimer(bool state)

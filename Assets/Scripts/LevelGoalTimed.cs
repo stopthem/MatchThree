@@ -13,19 +13,19 @@ public class LevelGoalTimed : LevelGoal
     {
         if (ScoreManager.Instance != null)
         {
-            return(ScoreManager.Instance.GetCurrentScore() >= scoreGoals[0]);
+            return (ScoreManager.Instance.GetCurrentScore() >= scoreGoals[0]);
         }
         return false;
     }
 
     public override bool IsGameOver()
     {
-        int maxScore = scoreGoals[scoreGoals.Length - 1 ];
+        int maxScore = scoreGoals[scoreGoals.Length - 1];
 
         if (ScoreManager.Instance.GetCurrentScore() >= maxScore)
         {
             return true;
         }
-        return(timeLeft <= 0);
+        return (timeLeft <= 0);
     }
 }

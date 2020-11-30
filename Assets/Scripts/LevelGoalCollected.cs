@@ -54,11 +54,11 @@ public class LevelGoalCollected : LevelGoal
         }
         if (levelCounter == LevelCounter.Timer)
         {
-            return(timeLeft <= 0);
+            return (timeLeft <= 0);
         }
         else
         {
-            return(movesLeft <= 0);
+            return (movesLeft <= 0);
         }
     }
 

@@ -5,19 +5,19 @@ using UnityEngine;
 [RequireComponent(typeof(GamePiece))]
 public class TimeBonus : MonoBehaviour
 {
-    [Range(0,5)]
+    [Range(0, 5)]
     public int bonusValue = 5;
 
-    [Range(0,1)]
-    public float chanceForBonus  = .1f;
+    [Range(0, 1)]
+    public float chanceForBonus = .1f;
 
-    public GameObject bonusGlow,ringGlow;
+    public GameObject bonusGlow, ringGlow;
 
-    public Material[] bonusMaterials; 
+    public Material[] bonusMaterials;
 
     private void Start()
     {
-        float random = Random.Range(0f,1f);
+        float random = Random.Range(0f, 1f);
 
         if (random > chanceForBonus)
         {
@@ -34,7 +34,7 @@ public class TimeBonus : MonoBehaviour
         SetActive(bonusValue != 0);
         if (bonusValue != 0)
         {
-            SetupMaterial(bonusValue - 1,bonusGlow);
+            SetupMaterial(bonusValue - 1, bonusGlow);
         }
     }
 
@@ -53,7 +53,7 @@ public class TimeBonus : MonoBehaviour
 
     private void SetupMaterial(int value, GameObject bonusGlow)
     {
-        int clampedValue = Mathf.Clamp(value,0,bonusMaterials.Length - 1);
+        int clampedValue = Mathf.Clamp(value, 0, bonusMaterials.Length - 1);
 
         if (bonusMaterials[clampedValue] != null)
         {

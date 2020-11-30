@@ -6,16 +6,16 @@ public class CollectionGoal : MonoBehaviour
 {
     public GamePiece prefabToCollect;
 
-    [Range(1,50)]
+    [Range(1, 50)]
     public int numberToCollect = 5;
 
-    private SpriteRenderer spriteRenderer;
+    private SpriteRenderer m_spriteRenderer;
 
     private void Start()
     {
         if (prefabToCollect != null)
         {
-            spriteRenderer = prefabToCollect.GetComponent<SpriteRenderer>();
+            m_spriteRenderer = prefabToCollect.GetComponent<SpriteRenderer>();
         }
     }
 
@@ -25,10 +25,10 @@ public class CollectionGoal : MonoBehaviour
         {
             SpriteRenderer spriteRenderer = piece.GetComponent<SpriteRenderer>();
 
-            if (this.spriteRenderer.sprite == spriteRenderer.sprite && prefabToCollect.matchValue == piece.matchValue)
+            if (m_spriteRenderer.sprite == spriteRenderer.sprite && prefabToCollect.matchValue == piece.matchValue)
             {
                 numberToCollect--;
-                numberToCollect = Mathf.Clamp(numberToCollect,0,numberToCollect);
+                numberToCollect = Mathf.Clamp(numberToCollect, 0, numberToCollect);
             }
         }
     }

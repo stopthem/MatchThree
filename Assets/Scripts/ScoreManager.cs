@@ -8,8 +8,8 @@ public class ScoreManager : Singleton<ScoreManager>
 {
     int currentScore = 0;
     int counterValue = 0;
-    int increment = 5 ;
-    
+    int increment = 5;
+
     public TextMeshProUGUI scoreText;
 
     private void Start()

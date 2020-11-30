@@ -15,7 +15,7 @@ public class ScoreStar : MonoBehaviour
         SetActive(false);
         // StartCoroutine(TestRoutine());
     }
-    
+
     private void SetActive(bool state)
     {
         if (starImage != null)
@@ -43,10 +43,10 @@ public class ScoreStar : MonoBehaviour
 
         if (SoundManager.Instance != null && starSound != null)
         {
-            SoundManager.Instance.PlayClipAtPoint(starSound,Vector3.zero,SoundManager.Instance.fxVolume);
+            SoundManager.Instance.PlayClipAtPoint(starSound, Vector3.zero, SoundManager.Instance.fxVolume);
         }
         yield return new WaitForSeconds(delay);
-        
+
         SetActive(true);
 
     }

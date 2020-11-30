@@ -9,24 +9,24 @@ public class LevelGoalScored : LevelGoal
         levelCounter = LevelCounter.Moves;
         base.Start();
     }
-    
+
     public override bool IsWinner()
     {
         if (ScoreManager.Instance != null)
         {
-            return(ScoreManager.Instance.GetCurrentScore() >= scoreGoals[0]);
+            return (ScoreManager.Instance.GetCurrentScore() >= scoreGoals[0]);
         }
         return false;
     }
 
     public override bool IsGameOver()
     {
-        int maxScore = scoreGoals[scoreGoals.Length - 1 ];
+        int maxScore = scoreGoals[scoreGoals.Length - 1];
 
         if (ScoreManager.Instance.GetCurrentScore() >= maxScore)
         {
             return true;
         }
-        return(movesLeft == 0);
+        return (movesLeft == 0);
     }
 }

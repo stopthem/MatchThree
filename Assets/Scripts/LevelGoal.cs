@@ -10,8 +10,8 @@ public enum LevelCounter
 public abstract class LevelGoal : Singleton<LevelGoal>
 {
     public int scoreStars = 0;
-    private int maxTime;
-    public int[] scoreGoals = new int[3] {1000,2000,3000};
+    private int m_maxTime;
+    public int[] scoreGoals = new int[3] { 1000, 2000, 3000 };
 
     public int movesLeft = 20;
     public int timeLeft = 60;
@@ -20,13 +20,13 @@ public abstract class LevelGoal : Singleton<LevelGoal>
     {
         if (levelCounter == LevelCounter.Timer)
         {
-            maxTime = timeLeft;
+            m_maxTime = timeLeft;
             if (UIManager.Instance != null && UIManager.Instance.timer != null)
             {
                 UIManager.Instance.timer.InitTimer(timeLeft);
             }
         }
-        
+
     }
 
     private int UpdateScore(int score)
@@ -54,7 +54,7 @@ public abstract class LevelGoal : Singleton<LevelGoal>
 
     private IEnumerator CountdownRoutine()
     {
-        while (timeLeft > 0 )
+        while (timeLeft > 0)
         {
             yield return new WaitForSeconds(1f);
             timeLeft--;
@@ -68,9 +68,9 @@ public abstract class LevelGoal : Singleton<LevelGoal>
     public void AddTime(int timeValue)
     {
         timeLeft += timeValue;
-        timeLeft = Mathf.Clamp(timeLeft,0,maxTime);
+        timeLeft = Mathf.Clamp(timeLeft, 0, m_maxTime);
 
-        if (UIManager.Instance != null &&  UIManager.Instance.timer != null)
+        if (UIManager.Instance != null && UIManager.Instance.timer != null)
         {
             UIManager.Instance.timer.UpdateTimer(timeLeft);
         }

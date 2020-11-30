@@ -8,8 +8,8 @@ public class ScoreMeter : MonoBehaviour
 {
     public Slider slider;
     public ScoreStar[] scoreStars = new ScoreStar[3];
-    LevelGoal levelGoal;
-    int maxScore;
+    private LevelGoal m_levelGoal;
+    private int m_maxScore;
 
     private void Awake()
     {
@@ -21,21 +21,21 @@ public class ScoreMeter : MonoBehaviour
         {
             return;
         }
-        this.levelGoal = levelGoal;
-        maxScore = levelGoal.scoreGoals[levelGoal.scoreGoals.Length - 1 ];
+        m_levelGoal = levelGoal;
+        m_maxScore = levelGoal.scoreGoals[levelGoal.scoreGoals.Length - 1];
         float sliderWidth = slider.GetComponent<RectTransform>().rect.width;
 
-        if (maxScore > 0)
+        if (m_maxScore > 0)
         {
             for (int i = 0; i < levelGoal.scoreGoals.Length; i++)
             {
                 if (scoreStars[i] != null)
                 {
-                    float newX = (sliderWidth * levelGoal.scoreGoals[i] / maxScore) - (sliderWidth * .5f);
+                    float newX = (sliderWidth * levelGoal.scoreGoals[i] / m_maxScore) - (sliderWidth * .5f);
                     RectTransform starRectXform = scoreStars[i].GetComponent<RectTransform>();
                     if (starRectXform != null)
                     {
-                        starRectXform.anchoredPosition = new Vector2(newX,starRectXform.anchoredPosition.y);
+                        starRectXform.anchoredPosition = new Vector2(newX, starRectXform.anchoredPosition.y);
                     }
                 }
             }
@@ -44,9 +44,9 @@ public class ScoreMeter : MonoBehaviour
 
     public void UpdateScoreMeter(int score, int starCount)
     {
-        if (levelGoal != null)
+        if (m_levelGoal != null)
         {
-            slider.value = (float)score / (float)maxScore;
+            slider.value = (float)score / (float)m_maxScore;
         }
 
         for (int i = 0; i < starCount; i++)

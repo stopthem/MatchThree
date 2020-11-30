@@ -13,7 +13,7 @@ public class ParticlePlay : MonoBehaviour
         particleArray = GetComponentsInChildren<ParticleSystem>();
         if (destroyImmedietly)
         {
-            Destroy(gameObject,lifeTime);
+            Destroy(gameObject, lifeTime);
         }
     }
 
@@ -24,6 +24,6 @@ public class ParticlePlay : MonoBehaviour
             particleSystem.Stop();
             particleSystem.Play();
         }
-        Destroy(gameObject,lifeTime);
+        Destroy(gameObject, lifeTime);
     }
 }

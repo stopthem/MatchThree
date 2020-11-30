@@ -21,7 +21,7 @@ public class ScreenFader : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        maskableGraphic.CrossFadeAlpha(alpha,timeToFade,true);
+        maskableGraphic.CrossFadeAlpha(alpha, timeToFade, true);
     }
 
     public void FadeOn()

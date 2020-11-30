@@ -5,7 +5,7 @@ using System.Linq;
 
 public class BoardDeadLock : MonoBehaviour
 {
-    private List<GamePiece> GetRowOrColumnList (GamePiece[,] allPieces, int x, int y,int listLength = 3, bool checkRow = true)
+    private List<GamePiece> GetRowOrColumnList(GamePiece[,] allPieces, int x, int y, int listLength = 3, bool checkRow = true)
     {
         int width = allPieces.GetLength(0);
         int height = allPieces.GetLength(1);
@@ -16,16 +16,16 @@ public class BoardDeadLock : MonoBehaviour
         {
             if (checkRow)
             {
-                if (x + i < width && y < height && allPieces[x + i,y] != null)
+                if (x + i < width && y < height && allPieces[x + i, y] != null)
                 {
-                    piecesList.Add(allPieces[x + i,y]);
+                    piecesList.Add(allPieces[x + i, y]);
                 }
             }
             else
             {
                 if (x < width && y + i < height && allPieces[x, y + i] != null)
                 {
-                    piecesList.Add(allPieces[x,y + i]);
+                    piecesList.Add(allPieces[x, y + i]);
                 }
             }
         }
@@ -48,7 +48,7 @@ public class BoardDeadLock : MonoBehaviour
         return matches;
     }
 
-    private List<GamePiece> GetNeighbors(GamePiece[,] allPieces,int x ,int y)
+    private List<GamePiece> GetNeighbors(GamePiece[,] allPieces, int x, int y)
     {
         int width = allPieces.GetLength(0);
         int height = allPieces.GetLength(1);
@@ -65,7 +65,7 @@ public class BoardDeadLock : MonoBehaviour
 
         foreach (Vector2 direction in searchDirections)
         {
-            if (x + (int)direction.x >= 0 && x + (int)direction.x < width && y + (int)direction.y >= 0 && y + (int) direction.y < height)
+            if (x + (int)direction.x >= 0 && x + (int)direction.x < width && y + (int)direction.y >= 0 && y + (int)direction.y < height)
             {
                 if (allPieces[x + (int)direction.x, y + (int)direction.y] != null)
                 {
@@ -79,15 +79,15 @@ public class BoardDeadLock : MonoBehaviour
         return neighbours;
     }
 
-    private bool HasMoveAt(GamePiece[,] allPieces, int x ,int y, int listLength = 3, bool checkRow = true)
+    private bool HasMoveAt(GamePiece[,] allPieces, int x, int y, int listLength = 3, bool checkRow = true)
     {
-        List<GamePiece> pieces = GetRowOrColumnList(allPieces,x,y,listLength,checkRow);
+        List<GamePiece> pieces = GetRowOrColumnList(allPieces, x, y, listLength, checkRow);
         List<GamePiece> matches = GetMinimumMatches(pieces, listLength - 1);
         GamePiece unmatchedPiece = null;
 
         if (pieces != null && matches != null)
         {
-            if (pieces.Count == listLength && matches.Count == listLength - 1 )
+            if (pieces.Count == listLength && matches.Count == listLength - 1)
             {
                 unmatchedPiece = pieces.Except(matches).FirstOrDefault();
             }
@@ -99,7 +99,7 @@ public class BoardDeadLock : MonoBehaviour
                 neighbors = neighbors.FindAll(n => n.matchValue == matches[0].matchValue);
                 matches = matches.Union(neighbors).ToList();
             }
-            
+
             if (matches.Count >= listLength)
             {
                 // string rowColStr = (checkRow) ? "row" : "column";
@@ -122,7 +122,7 @@ public class BoardDeadLock : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                if (HasMoveAt(allPieces, i , j, listLength, true) || HasMoveAt(allPieces,i , j,listLength,false))
+                if (HasMoveAt(allPieces, i, j, listLength, true) || HasMoveAt(allPieces, i, j, listLength, false))
                 {
                     isDeadLocked = false;
                 }

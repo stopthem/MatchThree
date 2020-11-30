@@ -13,7 +13,7 @@ public class ParticleManager : MonoBehaviour
     {
         if (clearFXPrefab != null)
         {
-            GameObject clearFX = Instantiate(clearFXPrefab, new Vector3(x,y,z), Quaternion.identity);
+            GameObject clearFX = Instantiate(clearFXPrefab, new Vector3(x, y, z), Quaternion.identity);
 
             ParticlePlay particlePlay = clearFX.GetComponent<ParticlePlay>();
 
@@ -33,14 +33,14 @@ public class ParticleManager : MonoBehaviour
         {
             if (doublebreakFXPrefab != null)
             {
-                breakFX = Instantiate(doublebreakFXPrefab, new Vector3(x,y,z), Quaternion.identity);
+                breakFX = Instantiate(doublebreakFXPrefab, new Vector3(x, y, z), Quaternion.identity);
             }
         }
         else
         {
             if (breakFXPrefab != null)
             {
-                breakFX = Instantiate(breakFXPrefab, new Vector3(x,y,z), Quaternion.identity);
+                breakFX = Instantiate(breakFXPrefab, new Vector3(x, y, z), Quaternion.identity);
             }
         }
         if (breakFX != null)
@@ -57,7 +57,7 @@ public class ParticleManager : MonoBehaviour
     {
         if (bombEffectPrefab != null)
         {
-            GameObject bombFX = Instantiate(bombEffectPrefab, new Vector3(x,y,z), Quaternion.identity);
+            GameObject bombFX = Instantiate(bombEffectPrefab, new Vector3(x, y, z), Quaternion.identity);
             ParticlePlay particlePlay = bombFX.GetComponent<ParticlePlay>();
             if (particlePlay != null)
             {

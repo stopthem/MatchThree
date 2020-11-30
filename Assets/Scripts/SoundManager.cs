@@ -9,12 +9,12 @@ public class SoundManager : Singleton<SoundManager>
     public AudioClip[] loseClips;
     public AudioClip[] bonusClips;
 
-    public float lowPitch = .95f,highPitch = 1.05f;
+    public float lowPitch = .95f, highPitch = 1.05f;
 
-    [Range(0,1)]
+    [Range(0, 1)]
     public float musicVolume = .5f;
-    
-    [Range(0,1)]
+
+    [Range(0, 1)]
     public float fxVolume = 1f;
 
     private void Start()
@@ -25,7 +25,7 @@ public class SoundManager : Singleton<SoundManager>
     {
         if (clip != null)
         {
-            GameObject go = new GameObject("SoundFX "+ clip.name);
+            GameObject go = new GameObject("SoundFX " + clip.name);
             go.transform.position = position;
 
             AudioSource source = go.AddComponent<AudioSource>();
@@ -33,12 +33,12 @@ public class SoundManager : Singleton<SoundManager>
 
             if (randomizePitch)
             {
-                float randomPitch = Random.Range(lowPitch,highPitch);
+                float randomPitch = Random.Range(lowPitch, highPitch);
                 source.pitch = randomPitch;
                 source.volume = volume;
             }
             source.Play();
-            Destroy(go,clip.length);
+            Destroy(go, clip.length);
             return source;
         }
         return null;
@@ -49,11 +49,11 @@ public class SoundManager : Singleton<SoundManager>
         {
             if (clips.Length != 0)
             {
-                int randomIndex = Random.Range(0,clips.Length);
+                int randomIndex = Random.Range(0, clips.Length);
 
                 if (clips[randomIndex] != null)
                 {
-                    AudioSource source = PlayClipAtPoint(clips[randomIndex],position,volume);
+                    AudioSource source = PlayClipAtPoint(clips[randomIndex], position, volume);
                     return source;
                 }
             }
@@ -63,18 +63,18 @@ public class SoundManager : Singleton<SoundManager>
 
     public void PlayRandomMusic()
     {
-        PlayRandom(musicClips,Vector3.zero,musicVolume);
+        PlayRandom(musicClips, Vector3.zero, musicVolume);
     }
     public void PlayWinSound()
     {
-        PlayRandom(winClips,Vector3.zero,fxVolume);
+        PlayRandom(winClips, Vector3.zero, fxVolume);
     }
     public void PlayLoseSound()
     {
-        PlayRandom(loseClips,Vector3.zero,fxVolume * .5f);
+        PlayRandom(loseClips, Vector3.zero, fxVolume * .5f);
     }
     public void PlayBonusSound()
     {
-        PlayRandom(bonusClips,Vector3.zero,fxVolume);
+        PlayRandom(bonusClips, Vector3.zero, fxVolume);
     }
 }

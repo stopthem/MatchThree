@@ -15,51 +15,51 @@ public class Tile : MonoBehaviour
     public int yIndex;
     public int xIndex;
     public TileType tileType = TileType.Normal;
-    private SpriteRenderer spriteRenderer;
+    private SpriteRenderer m_spriteRenderer;
 
     public Color normalColor;
 
     public int breakableValue = 0;
     public Sprite[] breakableSprites;
-    private Board board;
+    private Board m_board;
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        m_spriteRenderer = GetComponent<SpriteRenderer>();
     }
-    public void Init(int x, int y , Board board)
+    public void Init(int x, int y, Board board)
     {
         xIndex = x;
         yIndex = y;
-        this.board = board;
+        m_board = board;
 
         if (tileType == TileType.Breakable)
         {
             if (breakableSprites[breakableValue] != null)
             {
-                spriteRenderer.sprite = breakableSprites[breakableValue];
+                m_spriteRenderer.sprite = breakableSprites[breakableValue];
             }
         }
     }
     private void OnMouseDown()
     {
-        if (board !=null)
+        if (m_board != null)
         {
-            board.ClickTile(this);
+            m_board.ClickTile(this);
         }
     }
     private void OnMouseEnter()
     {
-        if (board !=null)
+        if (m_board != null)
         {
-            board.DragToTile(this);
+            m_board.DragToTile(this);
         }
     }
-    
+
     private void OnMouseUp()
     {
-        if (board !=null)
+        if (m_board != null)
         {
-            board.ReleaseTile();
+            m_board.ReleaseTile();
         }
     }
     public void BreakTile()
@@ -72,20 +72,20 @@ public class Tile : MonoBehaviour
     }
     private IEnumerator BreakTileRoutine()
     {
-        breakableValue--; 
-        breakableValue = Mathf.Clamp(breakableValue,0,breakableValue);
+        breakableValue--;
+        breakableValue = Mathf.Clamp(breakableValue, 0, breakableValue);
 
         yield return new WaitForSeconds(.2f);
 
         if (breakableSprites[breakableValue] != null)
         {
-            spriteRenderer.sprite = breakableSprites[breakableValue];
+            m_spriteRenderer.sprite = breakableSprites[breakableValue];
         }
 
         if (breakableValue == 0)
         {
             tileType = TileType.Normal;
-            spriteRenderer.color = normalColor;
+            m_spriteRenderer.color = normalColor;
         }
     }
 }

@@ -5,30 +5,30 @@ using UnityEngine;
 [RequireComponent(typeof(RectTransform))]
 public class RectXformMover : MonoBehaviour
 {
-    public Vector3 startPosition,onScreenPosition,endPosition;
+    public Vector3 startPosition, onScreenPosition, endPosition;
 
     public float timeToMove = 1f;
 
-    private RectTransform rectTransform;
+    private RectTransform m_rectTransform;
 
     private bool isMoving = false;
 
     private void Awake()
     {
-        rectTransform = GetComponent<RectTransform>();
+        m_rectTransform = GetComponent<RectTransform>();
     }
-    private void Move(Vector3 startPos,Vector3 endPos, float timeToMove)
+    private void Move(Vector3 startPos, Vector3 endPos, float timeToMove)
     {
         if (!isMoving)
         {
-            StartCoroutine(MoveRoutine(startPos,endPos,timeToMove));
+            StartCoroutine(MoveRoutine(startPos, endPos, timeToMove));
         }
     }
-    private IEnumerator MoveRoutine(Vector3 startPos,Vector3 endPos, float timeToMove)
+    private IEnumerator MoveRoutine(Vector3 startPos, Vector3 endPos, float timeToMove)
     {
-        if (rectTransform !=null )
+        if (m_rectTransform != null)
         {
-            rectTransform.anchoredPosition = startPos;
+            m_rectTransform.anchoredPosition = startPos;
         }
 
         bool reachedDestination = false;
@@ -37,11 +37,11 @@ public class RectXformMover : MonoBehaviour
 
         while (!reachedDestination)
         {
-            if (Vector3.Distance(rectTransform.anchoredPosition,endPos)< 0.010f)
+            if (Vector3.Distance(m_rectTransform.anchoredPosition, endPos) < 0.010f)
             {
                 reachedDestination = true;
                 break;
-                
+
             }
 
             elapsedTime += Time.deltaTime;
@@ -49,9 +49,9 @@ public class RectXformMover : MonoBehaviour
             float t = Mathf.Clamp01(elapsedTime / timeToMove);
             t = t * t * t * (t * (t * 6 - 15) + 10);
 
-            if (rectTransform != null)
+            if (m_rectTransform != null)
             {
-                rectTransform.anchoredPosition = Vector3.Lerp(startPos,endPos,t);
+                m_rectTransform.anchoredPosition = Vector3.Lerp(startPos, endPos, t);
             }
             yield return null;
         }
@@ -60,10 +60,10 @@ public class RectXformMover : MonoBehaviour
 
     public void MoveOn()
     {
-        Move(startPosition,onScreenPosition,timeToMove);
+        Move(startPosition, onScreenPosition, timeToMove);
     }
     public void MoveOff()
     {
-        Move(onScreenPosition,endPosition,timeToMove);
+        Move(onScreenPosition, endPosition, timeToMove);
     }
 }
