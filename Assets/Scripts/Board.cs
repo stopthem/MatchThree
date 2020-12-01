@@ -145,6 +145,21 @@ public class Board : MonoBehaviour
         return null;
     }
 
+    public void MakeColorBombBooster(int x, int y)
+    {
+        if (IsWithinBounds(x, y))
+        {
+            GamePiece pieceToReplace = gamePiecesArray[x, y];
+
+            if (pieceToReplace != null)
+            {
+                ClearPieceAt(x, y);
+                GameObject bombObject = MakeBomb(colorBombPrefab, x, y);
+                ActiveBomb(bombObject);
+            }
+        }
+    }
+
     private void SetupGamePieces()
     {
         foreach (StartingObject sPiece in startingGamePieces)
@@ -753,6 +768,18 @@ public class Board : MonoBehaviour
     {
         StartCoroutine(ClearAndRefillBoardRoutine(gamePieces));
     }
+
+    public void ClearAndRefillBoard(int x, int y)
+    {
+        if (IsWithinBounds(x,y))
+        {
+            GamePiece pieceToClear = gamePiecesArray[x, y];
+            List<GamePiece> listOfOne = new List<GamePiece>();
+            listOfOne.Add(pieceToClear);
+            ClearAndRefillBoard(listOfOne);
+        }
+    }
+
     private IEnumerator ClearAndRefillBoardRoutine(List<GamePiece> gamePieces)
     {
         playerInputEnabled = false;
