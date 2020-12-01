@@ -361,28 +361,7 @@ public class Board : MonoBehaviour
 
                     List<GamePiece> clickedPieceMatches = FindMatchesAt(clickedTile.xIndex, clickedTile.yIndex);
                     List<GamePiece> targetPieceMatches = FindMatchesAt(targetTile.xIndex, targetTile.yIndex);
-                    List<GamePiece> colorMatches = new List<GamePiece>();
-
-                    if (IsColorBomb(clickedPiece) && !IsColorBomb(targetPiece))
-                    {
-                        clickedPiece.matchValue = targetPiece.matchValue;
-                        colorMatches = FindAllMatchValue(clickedPiece.matchValue);
-                    }
-                    else if (!IsColorBomb(clickedPiece) && IsColorBomb(targetPiece))
-                    {
-                        targetPiece.matchValue = clickedPiece.matchValue;
-                        colorMatches = FindAllMatchValue(targetPiece.matchValue);
-                    }
-                    else if (IsColorBomb(clickedPiece) && IsColorBomb(targetPiece))
-                    {
-                        foreach (GamePiece piece in gamePiecesArray)
-                        {
-                            if (!colorMatches.Contains(piece))
-                            {
-                                colorMatches.Add(piece);
-                            }
-                        }
-                    }
+                    List<GamePiece> colorMatches = ProcessColorBombs(clickedPiece, targetPiece);
 
                     if (targetPieceMatches.Count == 0 && clickedPieceMatches.Count == 0 && colorMatches.Count == 0)
                     {
@@ -428,6 +407,61 @@ public class Board : MonoBehaviour
             }
         }
     }
+
+    private List<GamePiece> ProcessColorBombs(GamePiece clickedPiece, GamePiece targetPiece, bool clearNonBlockers = false)
+    {
+        List<GamePiece> colorMatches = new List<GamePiece>();
+
+        GamePiece colorBombPiece = null;
+        GamePiece otherPiece = null;
+
+        if (IsColorBomb(clickedPiece) && !IsColorBomb(targetPiece))
+        {
+            colorBombPiece = clickedPiece;
+            otherPiece = targetPiece;
+        }
+        else if (!IsColorBomb(clickedPiece) && IsColorBomb(targetPiece))
+        {
+            colorBombPiece = targetPiece;
+            otherPiece = clickedPiece;
+        }
+        else if (IsColorBomb(clickedPiece) && IsColorBomb(targetPiece))
+        {
+            foreach (GamePiece piece in gamePiecesArray)
+            {
+                if (!colorMatches.Contains(piece))
+                {
+                    colorMatches.Add(piece);
+                }
+            }
+        }
+
+        if (colorBombPiece != null)
+        {
+            colorBombPiece.matchValue = otherPiece.matchValue;
+            colorMatches = FindAllMatchValue(otherPiece.matchValue);
+        }
+
+        if (!clearNonBlockers)
+        {
+            List<GamePiece> collectedAtBottom = FindAllCollectibles(true);
+
+            if (collectedAtBottom.Contains(otherPiece))
+            {
+                return new List<GamePiece>();
+            }
+            else
+            {
+                foreach (GamePiece pieces in collectedAtBottom)
+                {
+                    colorMatches.Remove(pieces);
+                }
+            }
+        }
+
+        return colorMatches;
+    }
+
     private bool isNextTo(Tile start, Tile end)
     {
         if (Mathf.Abs(start.xIndex - end.xIndex) == 1 && start.yIndex == end.yIndex)
@@ -771,7 +805,7 @@ public class Board : MonoBehaviour
 
     public void ClearAndRefillBoard(int x, int y)
     {
-        if (IsWithinBounds(x,y))
+        if (IsWithinBounds(x, y))
         {
             GamePiece pieceToClear = gamePiecesArray[x, y];
             List<GamePiece> listOfOne = new List<GamePiece>();
@@ -1122,13 +1156,13 @@ public class Board : MonoBehaviour
         }
         return foundCollectibles;
     }
-    private List<GamePiece> FindAllCollectibles()
+    private List<GamePiece> FindAllCollectibles(bool clearedAtBottomOnly = false)
     {
         List<GamePiece> foundCollectibles = new List<GamePiece>();
 
         for (int i = 0; i < height; i++)
         {
-            List<GamePiece> collectibleRow = FindCollectiblesAt(i);
+            List<GamePiece> collectibleRow = FindCollectiblesAt(i, clearedAtBottomOnly);
             foundCollectibles = foundCollectibles.Union(collectibleRow).ToList();
         }
 
