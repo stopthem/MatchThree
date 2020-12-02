@@ -193,7 +193,15 @@ public class GameManager : Singleton<GameManager>
         {
             yield return null;
         }
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (SceneManager.GetActiveScene().name == "Level 1")
+        {
+            SceneManager.LoadScene(1);
+        }
+        else
+        {
+            SceneManager.LoadScene("Level 1");
+        }
+        
 
     }
 

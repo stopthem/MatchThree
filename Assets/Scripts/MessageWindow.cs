@@ -44,7 +44,7 @@ public class MessageWindow : MonoBehaviour
 
     public void ShowWinMessage()
     {
-        ShowMessage(winIcon, "LEVEL\nCOMPLETE", "AGANE");
+        ShowMessage(winIcon, "LEVEL\nCOMPLETE", "CONTINUE");
     }
     public void ShowLoseMessage()
     {

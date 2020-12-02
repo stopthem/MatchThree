@@ -11695,10 +11695,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreStars: 0
-  scoreGoals: d007000088130000581b0000
+  scoreGoals: b80b00007017000028230000
   movesLeft: 20
   timeLeft: 60
-  levelCounter: 1
+  levelCounter: 0
   collectionGoals:
   - {fileID: 943025069}
   - {fileID: 996830464}
